@@ -87,7 +87,6 @@ public class Program {
 
     async void GithubRepositorySelection(Action<Repository> callback) {
         int selection;
-        Repository repo = null;
         PrintGithubRepositories();
         List<Repository> repos = (await _githubClient.Repository.GetAllForCurrent()).ToList();
 
