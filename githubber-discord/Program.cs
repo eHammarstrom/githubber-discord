@@ -112,11 +112,10 @@ public class Program {
     }
 
     async void HandleCommits(Server server, Channel channel, Repository repo) {
-        string taskMsg = "Hubber Jr. is handling " + server.Name + ":" + channel.Name + " with care.";
-        string listenMsg = "And Hubber Jr. listens to " + repo.Name + "@github.";
+        string taskMsg = "Hubber Jr. is handling " + server.Name + ":" + channel.Name + " with care.\n" +
+            "And Hubber Jr. listens to " + repo.Name + "@github.";
 
         await channel.SendMessage(taskMsg);
-        await channel.SendMessage(listenMsg);
 
         int numOfCommits = (await _githubClient.Repository.Commit.GetAll(repo.Id)).Count;
 
@@ -128,7 +127,9 @@ public class Program {
                 var toAnnounce = commits.Take(take);
 
                 toAnnounce.ToList().ForEach(async x => {
-                    string msg = x.Author.Login + " has committed changes.\n" + x.HtmlUrl;
+                    string msg = x.Author.Login + " has committed changes to " + repo.Name + ".\n" +
+                        "Message: " + x.Commit.Message + "\n" +
+                        x.HtmlUrl;
                     await channel.SendMessage(msg);
                 });
 
