@@ -127,7 +127,7 @@ public class Program {
                 var toAnnounce = commits.Take(take);
 
                 toAnnounce.ToList().ForEach(async x => {
-                    string msg = x.Author.Login + " has committed changes to " + repo.Name + ".\n" +
+                    string msg = x.Author.Login + " has committed changes to " + repo.Name + ".\n\n" +
                         "Message: " + x.Commit.Message + "\n\n" +
                         x.HtmlUrl;
                     await channel.SendMessage(msg);
