@@ -13,10 +13,8 @@ public class Program {
     }
 
     private GitHubClient _githubClient;
-
     private DiscordClient _discordClient;
     private string _discordToken;
-
     private List<Server> _discordServers;
 
     public void Start(string discordToken, string githubToken) {
@@ -31,15 +29,22 @@ public class Program {
             Console.WriteLine("Hubber is waiting for available servers.");
 
             _discordClient.ServerAvailable += (s, e) => {
-                _discordServers.Add(e.Server);
-
-                Server server = DiscordServerSelection();
-                Channel channel = DiscordChannelSelection(server);
-
-                GithubRepositorySelection((repo) => {
-                    new Task(() => this.HandleCommits(server, channel, repo)).Start();
-                });
+                _discordServers = _discordClient.Servers.ToList();
             };
+
+            await Task.Delay(2 * 1000); // Recommended time-to-wait by devs
+            startQuiz();
+        });
+    }
+
+    void startQuiz() {
+        Server server = DiscordServerSelection();
+        Channel channel = DiscordChannelSelection(server);
+
+        GithubRepositorySelection((repo) => {
+            new Task(() => this.HandleCommits(server, channel, repo)).Start();
+            Console.WriteLine("Hubber assigned.");
+            startQuiz();
         });
     }
 
@@ -111,9 +116,7 @@ public class Program {
         string listenMsg = "And Hubber Jr. listens to " + repo.Name + "@github.";
 
         await channel.SendMessage(taskMsg);
-
-        Console.WriteLine(taskMsg);
-        Console.WriteLine(listenMsg);
+        await channel.SendMessage(listenMsg);
 
         int numOfCommits = (await _githubClient.Repository.Commit.GetAll(repo.Id)).Count;
 
