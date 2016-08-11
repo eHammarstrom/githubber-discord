@@ -49,7 +49,7 @@ public class Program {
     }
 
     #region CLI Quiz
-    void PrintDiscordServer() {
+    void PrintDiscordServers() {
         int i = 0;
         Console.WriteLine("Select a server: ");
         _discordServers.ForEach(x => Console.WriteLine(i++ + ": " + x.Name));
@@ -57,7 +57,7 @@ public class Program {
 
     Server DiscordServerSelection() {
         int selection;
-        PrintDiscordServer();
+        PrintDiscordServers();
 
         if (int.TryParse(Console.ReadLine(), out selection) && _discordServers.Count > selection)
             return _discordServers[selection];
