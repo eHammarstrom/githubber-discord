@@ -135,7 +135,7 @@ public class Program {
 
                 numOfCommits = commits.Count;
             }
-            await Task.Delay(1 * 1000);
+            await Task.Delay(6 * 1000);
         }
     }
 }
