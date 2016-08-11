@@ -107,8 +107,14 @@ public class Program {
     }
 
     async void HandleCommits(Server server, Channel channel, Repository repo) {
-        Console.WriteLine("Hubber Jr. is handling {0}:{1} with care.", server.Name, channel.Name);
-        Console.WriteLine("And Hubber Jr. listens to {0}@github.", repo.Name);
+        string taskMsg = "Hubber Jr. is handling " + server.Name + ":" + channel.Name + " with care.";
+        string listenMsg = "And Hubber Jr. listens to " + repo.Name + "@github.";
+
+        await channel.SendMessage(taskMsg);
+
+        Console.WriteLine(taskMsg);
+        Console.WriteLine(listenMsg);
+
         int numOfCommits = (await _githubClient.Repository.Commit.GetAll(repo.Id)).Count;
 
         while (true) {
