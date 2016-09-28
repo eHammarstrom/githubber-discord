@@ -18,7 +18,7 @@ public class Program {
     private List<Server> _discordServers;
 
     public void Start(string discordToken, string githubToken) {
-        _discordToken = discordToken;
+        _discordToken = "Bot " + discordToken;
         _discordClient = new DiscordClient();
         _githubClient = configureGithub(githubToken);
         _discordServers = new List<Server>();
